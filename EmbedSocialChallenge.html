@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <style>
+
+        #container{
+         margin: 0 50px 0 50px;
+        }
+        .post{
+            width: 47%;
+            height: 590px;
+            display: inline-block;
+            float: left;
+            margin: 2px;
+            border: solid gray 1px;
+            padding: 10px;
+        }
+        .profile-picture img{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .user-date{
+            display: inline-block;
+            width: 170px;
+        }
+        .logo{
+            float: right;
+        }
+        .picture img{
+            width: 100%;
+            padding-left: 2px;
+            padding-right: 2px;
+            height: 350px;
+            text-align: center;
+        }
+        .body-post {
+            height: 508px;
+            border-bottom: 1px solid gray;
+        }
+        .footer{
+            height: 46px;
+            display: flex;
+            align-items: center;
+        }
+        .footer span{
+           margin: 3px;
+        }
+        #load-more{
+            background-color: #3B6FFF; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-left: 43%;
+            margin-right: 43%;
+        }
+        .none{
+            display: none !important;
+        }
+        @media only screen and (max-width: 768px){
+            .post {
+                width: 93%;
+                height: 590px;
+                display: inline-block;
+                float: left;
+                margin: 10px;
+                border: solid gray 1px;
+                padding: 10px;
+            }
+            #load-more {
+                background-color: #3B6FFF;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                border-radius: 5px;
+                margin-left: 38%;
+                margin-right: 38%;
+            }
+        }
+        @media only screen and (min-width: 769px) and (max-width: 991px){
+            .post{
+                width: 46%;
+                height: 590px;
+                display: inline-block;
+                float: left;
+                margin: 2px;
+                border: solid gray 1px;
+                padding: 10px;
+            }
+            #load-more {
+                background-color: #3B6FFF;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                border-radius: 5px;
+                margin-left: 38%;
+                margin-right: 38%;
+            }
+
+        }
+        @media only screen and (min-width: 992px){
+            
+        }
+
+    </style>
+<div id="container"></div>
+<button id="load-more" onClick="loadPhotos()" >Load More</button>
+<script type="text/javascript" src="data.json"></script>
+</body>
+</html>
+
+<script>
+    fetch("./data.json").then(function(response){
+        return response.json();
+    }).then(function(data){
+        let container = document.getElementById("container");
+        data.forEach(element => {
+            let date = element.date.split(" ")[0];
+            let dateFormat = new Date(date);
+            let realDate = dateFormat + "";
+            realDate = realDate.slice(4,15);
+
+            container.innerHTML += `
+                <div class="post none">
+                    <div class="header-post">
+                        <span class="profile-picture"><img src="${element.profile_image}"/></span>
+                        <span class="user-date">
+                            <div class="username"><b>${element.name}</b></div>
+                            <div class="date">${realDate}</div>
+                        </span>
+                        <span class="logo"><img src="instagram-logo.svg"/></span>
+                    </div>
+                    <div class="body-post">
+                        <div class="picture"><img class="myBtn" src="${element.image}"/></div>
+                        <div class="description">${element.caption}</div>
+                    </div>
+                    <div class="footer">
+                        <span class="like"><img src="heart.svg"/></span>
+                        <span class="number-likes">${element.likes}</span>
+                    </div>
+                </div>
+            `
+            
+        });
+        let x = document.getElementsByClassName("none");
+        for(let i = 0; i<4;i++){
+            x[i].classList.remove("none");
+        }
+    })//using live server
+
+    
+    function loadPhotos()
+    {
+        let x = document.getElementsByClassName("none");
+        if(x.length <= 4){
+            for(let i = 0; i<x.length;i++){
+            x[i].classList.remove("none");
+            let btn =document.getElementById("load-more").style.display = "none";
+            
+            }
+        }else{
+            for(let i = 0; i<4;i++){
+                x[i].classList.remove("none");
+            }
+        }
+    }
+  
+
+</script>
+
